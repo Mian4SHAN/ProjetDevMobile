@@ -1,7 +1,13 @@
+import 'dart:html';
+
+import 'package:devmobile/article.dart';
+import 'package:devmobile/profil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'home_page.dart';
+
 
 class LoginPage extends StatefulWidget{
   const LoginPage({Key? key}) : super(key: key);
@@ -11,6 +17,42 @@ class LoginPage extends StatefulWidget{
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  // texte controleur pour le mail et mdp
+  final emailControlleur = TextEditingController();
+  final mdpControlleur = TextEditingController();
+
+  //connexion
+  Future signIn() async{
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where("mail", isEqualTo: emailControlleur.text)
+          .where("mdp", isEqualTo: mdpControlleur.text)
+          .get()
+          .then((querySnapshot) async {
+            print(emailControlleur.text);
+            print(mdpControlleur.text);
+            if(querySnapshot.docs.isNotEmpty) {
+              print(querySnapshot.docs[0].reference.id);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()));
+        }       
+          else{
+              print("erreur");
+          }
+      });
+  }
+ 
+
+  @override
+  void dispose(){
+    super.dispose();
+    emailControlleur.dispose();
+    mdpControlleur.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextField(
                     //rendre invisible
+                    controller: mdpControlleur,
                     obscureText: true,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
@@ -138,11 +181,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // texte controleur pour le mail et mdp
-  final emailControlleur = TextEditingController();
-  final mdpControlleur = TextEditingController();
 
-  Future signIn() async{
-    //await FirebaseA
-  }
 }
