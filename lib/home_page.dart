@@ -58,7 +58,9 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             leading: Image.network(_vetements[index].description),
-            title: Text(_vetements[index].nom),
+            title: Text(_vetements[index].nom, style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 24)
+            ),
             subtitle: Text(_vetements[index].taille),
             trailing: Text('\$${_vetements[index].prix.toStringAsFixed(2)}'),
             onTap: (){
@@ -71,37 +73,51 @@ class _HomePageState extends State<HomePage> {
         items: [
           new BottomNavigationBarItem(
               icon: const Icon(Icons.local_mall),
-              label: "panier"
+              label: "Home"
           ),
 
           new BottomNavigationBarItem(
               icon: const Icon(Icons.shopping_cart),
-              label: "achat"
+              label: "Panier"
           ),
 
           new BottomNavigationBarItem(
             icon: const Icon(Icons.account_circle),
-            label: "profil",
+            label: "Profil",
           )
         ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
 
   }
+  int _selectedIndex = 0;
 
-
-  /*Future profil() async{
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const Profil()));
-      }
-
-      Future home() async{
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    print(index);
+    switch (index) {
+      case 0:
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const HomePage()));
-      }*/
-
-
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Profil()),
+        );
+        break;
+    }
+  }
 
 }

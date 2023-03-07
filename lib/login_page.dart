@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:devmobile/article.dart';
 import 'package:devmobile/profil.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,10 +28,7 @@ class _LoginPageState extends State<LoginPage> {
           .where("mdp", isEqualTo: mdpControlleur.text)
           .get()
           .then((querySnapshot) async {
-            print(emailControlleur.text);
-            print(mdpControlleur.text);
             if(querySnapshot.docs.isNotEmpty) {
-              print(querySnapshot.docs[0].reference.id);
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()));
@@ -43,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
           }
       });
   }
- 
 
   @override
   void dispose(){
@@ -72,14 +66,15 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Icon(Icons.shopping_cart, size: 80),
+              SizedBox(height: 50),
               // Bienvenu~
-              SizedBox(height: 25),
               Text('Bienvenue,'
                   ' veuillez vous connecter pour faire votre shopping',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                )
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  )
               ),
               SizedBox(height: 50),
               Padding(
@@ -172,8 +167,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   ),
                 ],
-              )
-
+              ),
             ]
           ),
         ),

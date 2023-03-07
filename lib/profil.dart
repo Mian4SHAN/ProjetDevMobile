@@ -65,10 +65,19 @@ class _Profil  extends State<Profil > {
                 icon: const Icon(Icons.account_circle),
                 label: "profil"
             )
-          ]
-
+          ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
+  }
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
 }
