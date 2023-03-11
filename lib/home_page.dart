@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devmobile/profil.dart';
 import 'package:flutter/material.dart';
-
 import 'article.dart';
 import 'détail.dart';
 
@@ -49,23 +48,62 @@ class _HomePageState extends State<HomePage> {
           title: Text('MIAGED',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 24
-              )
-          )
+                  fontSize: 24,
+                  color: Colors.white,
+              ),
+          ),
+          actions: [
+          IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {},
+          ),
+          IconButton(
+         icon: Icon(Icons.notifications),
+          onPressed: () {},
+          ),],
       ),
       body: ListView.builder(
         itemCount: _vetements.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: Image.network(_vetements[index].description),
-            title: Text(_vetements[index].nom, style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 24)
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+            child: ListTile(
+              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              leading: Image.network(
+                _vetements[index].description,
+                width: 100.0,
+                height: 100.0,
+                fit: BoxFit.contain,
+              ),
+              title: Text(
+                _vetements[index].nom,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+              subtitle: Text(
+                'Taille: ${_vetements[index].taille}',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.grey[800],
+                ),
+              ),
+              trailing: Text(
+                '\$${_vetements[index].prix.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                  color: Colors.blue[700],
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Detail(vetement: _vetements[index])),
+                );
+              },
             ),
-            subtitle: Text(_vetements[index].taille),
-            trailing: Text('\$${_vetements[index].prix.toStringAsFixed(2)}'),
-            onTap: (){
-              Navigator.push(context,MaterialPageRoute(builder: (context) => Detail(vetement: _vetements[index])));
-            },
           );
         },
       ),
@@ -88,6 +126,7 @@ class _HomePageState extends State<HomePage> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        selectedItemColor: Colors.blue[300],
       ),
     );
 
