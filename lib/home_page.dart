@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devmobile/panier.dart';
 import 'package:devmobile/profil.dart';
 import 'package:flutter/material.dart';
 import 'article.dart';
@@ -137,7 +138,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    print(index);
     switch (index) {
       case 0:
         Navigator.pushReplacement(
@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => PanierPage()),
         );
         break;
       case 2:

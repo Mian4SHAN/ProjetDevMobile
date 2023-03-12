@@ -53,14 +53,15 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         backgroundColor: Colors.blue[300],
-          centerTitle: true,
-          title: Text('MIAGED',
+        centerTitle: true,
+        title: Text('MIAGED',
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24
-              )
+                fontWeight: FontWeight.bold,
+                fontSize: 24
             )
-          ),
+        ),
+        automaticallyImplyLeading: false, // Ajout de cette ligne
+      ),
       body: SafeArea (
         child: Center(
           child: Column(

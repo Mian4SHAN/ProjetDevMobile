@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:devmobile/panier.dart';
 import 'package:flutter/material.dart';
 
 import 'home_page.dart';
+import 'login_page.dart';
 
 class Profil extends StatefulWidget {
   const Profil({Key? key}) : super(key: key);
@@ -41,6 +43,20 @@ class _ProfilState extends State<Profil> {
     }
   }
 
+  void _saveUserData() async {
+    await FirebaseFirestore.instance.collection('users').doc('user1').set({
+      'mail': _mail,
+      'mdp': _mdp,
+      'dateAnniv': _dateAnniv,
+      'adresse': _adress,
+      'codePostal': _codePostal,
+      'ville': _ville,
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Données sauvegardées')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,31 +64,57 @@ class _ProfilState extends State<Profil> {
       appBar: AppBar(
         backgroundColor: Colors.blue[300],
         centerTitle: true,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.account_circle),
-            SizedBox(width: 8.0),
-            Text('Mon profil', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-          ],
+        title: Text('Mon Profil',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.white,
+          ),
         ),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+          TextButton(
+            onPressed: _saveUserData,
+            child: Text('Valider', style: TextStyle(color: Colors.white)),
+          ),
+        ],
       ),
       body: _mail != null
           ? ListView(
         children: [
-          _buildInfoTile('Email', _mail),
-          _buildInfoTile('Mot de passe', _mdp),
-          _buildInfoTile('Date de naissance', _dateAnniv),
-          _buildInfoTile('Adresse', _adress),
-          _buildInfoTile('Code postal', _codePostal),
-          _buildInfoTile('Ville', _ville),
+          _buildEditableTextField('Email', _mail, (value) => setState(() => _mail = value)),
+          _buildEditableTextField('Mot de passe', '********', (value) => setState(() => _mdp = value)),
+          _buildEditableTextField('Date de naissance', _dateAnniv, (value) => setState(() => _dateAnniv = value)),
+          _buildEditableTextField('Adresse', _adress, (value) => setState(() => _adress = value)),
+          _buildEditableTextField('Code postal', _codePostal, (value) => setState(() => _codePostal = value)),
+          _buildEditableTextField('Ville', _ville, (value) => setState(() => _ville = value)),
+          SizedBox(height: 16),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Text('Déconnexion'),
+            ),
+          ),
         ],
       )
           : Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.local_mall), label: 'Panier'),
-          BottomNavigationBarItem(icon: const Icon(Icons.shopping_cart), label: 'Achat'),
+          BottomNavigationBarItem(icon: const Icon(Icons.local_mall), label: 'Home'),
+          BottomNavigationBarItem(icon: const Icon(Icons.shopping_cart), label: 'Panier'),
           BottomNavigationBarItem(icon: const Icon(Icons.account_circle), label: 'Profil'),
         ],
         currentIndex: _selectedIndex,
@@ -82,21 +124,32 @@ class _ProfilState extends State<Profil> {
     );
   }
 
-  Widget _buildInfoTile(String label, String value) {
-    return Card(
-      child: ListTile(
-        title: Text(label),
-        trailing: Text(value),
+  Widget _buildEditableTextField(String label, String value, void Function(String) onChanged) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label),
+          const SizedBox(height: 8.0),
+          TextFormField(
+            initialValue: value,
+            onChanged: onChanged,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ],
       ),
     );
   }
+
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    print(index);
     switch (index) {
       case 0:
         Navigator.pushReplacement(
@@ -106,7 +159,7 @@ class _ProfilState extends State<Profil> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => PanierPage()),
         );
         break;
       case 2:
