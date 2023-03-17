@@ -38,7 +38,7 @@ Interface de login :
 Liste de vêtements :
 - Critère d’acceptance #1 : Une fois connecté, l’utilisateur arrive sur cette page composée du contenu
 principal et d’une BottomNavigationBar composée de trois entrées et leurs icones correspondantes : Acheter, Panier et Profil
--Critère d’acceptance #2 : La page actuelle est la page Acheter. Son icone et son texte sont d’une couleur
+- Critère d’acceptance #2 : La page actuelle est la page Acheter. Son icone et son texte sont d’une couleur
 différente des autres entrées
 - Critère d’acceptance #3 : Une liste déroulante de tous les vêtements m’est proposé à l’écran
 - Critère d’acceptance #4 : Chaque vêtement affiche les informations suivantes :
